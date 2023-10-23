@@ -64,7 +64,6 @@ export const google = async (req, res, next) => {
         .json(rest);
     }
   } catch (error) {
-    console.log(error, "in google error");
     next(error);
   }
 };

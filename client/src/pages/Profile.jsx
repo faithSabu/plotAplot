@@ -148,10 +148,12 @@ export default function Profile() {
             </span>
           ) : filePercent > 0 && filePercent < 100 ? (
             <span className="text-green-700">{`Uploading ${filePercent} %`}</span>
-          ) : (
+          ) : filePercent === 100 ? (
             <span className="text-green-700">
               File Uploaded Successfully !!
             </span>
+          ) : (
+            ""
           )}
         </p>
         <input

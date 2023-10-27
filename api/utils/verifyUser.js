@@ -11,9 +11,6 @@ export const verifyToken = (req, res, next) => {
 
     req.user = user;
 
-    if (req.params.id && user.id !== req.params.id)
-      return next(errorHandler(401, "You are not authorized!!"));
-
     next();
   });
 };

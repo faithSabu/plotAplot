@@ -19,11 +19,12 @@ import {
   signoutSuccess,
 } from "../redux/user/userSlice";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Profile() {
   const fileRef = useRef(null);
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const { currentUser, loading, error } = useSelector((state) => state.user);
 
   const [file, setFile] = useState(undefined);
@@ -285,7 +286,7 @@ export default function Profile() {
                   >
                     Delete
                   </button>
-                  <button className="text-green-700 uppercase">Edit</button>
+                  <button onClick={() => navigate(`/update-listing/${listing._id}`)} className="text-green-700 uppercase">Edit</button>
                 </div>
               </div>
               {deleteListingErr &&

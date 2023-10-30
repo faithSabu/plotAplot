@@ -5,6 +5,7 @@ import ListingCard from "../components/ListingCard";
 export default function Search() {
   const [loading, setLoading] = useState(false);
   const [listings, setListings] = useState([]);
+  const [showMore, setShowMore] = useState(false);
   const [sidebarData, setSidebarData] = useState({
     searchTerm: "",
     type: "all",
@@ -46,6 +47,7 @@ export default function Search() {
         const data = await res.json();
         setListings(data);
         setLoading(false);
+        if (data.length > 8) setShowMore(true);
       } catch (error) {
         setLoading(false);
         console.error(error);
@@ -99,6 +101,18 @@ export default function Search() {
     urlParams.set("order", sidebarData.order);
     const searchQuery = urlParams.toString();
     navigate(`/search?${searchQuery}`);
+  };
+
+  const handleShowMore = async (e) => {
+    e.preventDefault();
+    const startIndex = listings.length;
+    const urlParams = new URLSearchParams(location.search);
+    urlParams.set("startIndex", startIndex);
+    const searchQuery = urlParams.toString();
+    const res = await fetch(`/api/listing/getListings?${searchQuery}`);
+    const data = await res.json();
+    if (data.length < 9) setShowMore(false);
+    setListings([...listings, ...data]);
   };
 
   return (
@@ -222,6 +236,14 @@ export default function Search() {
               <ListingCard key={listing._id} listing={listing} />
             ))}
         </div>
+        {showMore && !loading && listings.length > 0 && (
+          <button
+            onClick={handleShowMore}
+            className="text-green-700 hover:underline p-7 text-center w-full"
+          >
+            Show More...
+          </button>
+        )}
       </div>
     </div>
   );

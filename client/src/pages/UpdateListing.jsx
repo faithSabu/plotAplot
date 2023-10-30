@@ -42,11 +42,10 @@ export default function UpdateListing() {
       const res = await fetch(`/api/listing/getListing/${listingId}`);
       const data = await res.json();
       if (data.success === false) {
-        console.log(data.message);
+        console.error(data.message);
         return;
       }
       setFormData(data);
-      console.log(data);
     };
     getListing();
   }, []);

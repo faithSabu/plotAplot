@@ -11,12 +11,10 @@ export default function Contact({ listing }) {
       const getLandlord = async () => {
         const res = await fetch(`/api/user/${listing.userRef}`);
         const data = await res.json();
-        console.log(data);
         if (data.success === false) {
           setGetLandlordErr(data.message);
           return;
         }
-        console.log(data);
         setLandlord(data);
         setGetLandlordErr(false);
       };

@@ -29,7 +29,6 @@ export default function Listing() {
 
   const { currentUser } = useSelector((state) => state.user);
 
-  console.log(currentUser);
 
   useEffect(() => {
     const listingId = params.listingId;

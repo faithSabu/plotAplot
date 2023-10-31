@@ -30,7 +30,7 @@ export default function Search() {
 
     setSidebarData({
       ...sidebarData,
-      searchTerm: searchTermFromURL,
+      ...(searchTermFromURL && { searchTerm: searchTermFromURL }),
       ...(typeFromURL && { type: typeFromURL }),
       ...(parkingFromURL && { parking: true }),
       ...(furnishedFromURL && { furnished: true }),

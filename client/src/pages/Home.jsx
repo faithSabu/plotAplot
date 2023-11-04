@@ -42,7 +42,6 @@ export default function Home() {
         const res = await fetch("/api/listing/getListings?type=rent&limit=4");
         const data = await res.json();
         setRentListings(data);
-        console.log(data);
       } catch (error) {
         console.error(error);
       }

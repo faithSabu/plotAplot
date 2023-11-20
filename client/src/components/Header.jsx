@@ -1,21 +1,23 @@
 import { FaSearch } from "react-icons/fa";
+import { MdOutlineLightMode, MdLightMode } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import useTheme from "../hooks/useTheme";
 
 export default function Header() {
   const navigate = useNavigate();
+  const { isDarkMode, toggleTheme } = useTheme();
 
   const [searchTerm, setSearchTerm] = useState("");
 
   const { currentUser } = useSelector((state) => state.user); // In state.user -> The "user" is the name of the slice we already created
 
   useEffect(() => {
-   const urlParams = new URLSearchParams(window.location.search)
-   const searchTermFromURL = urlParams.get('searchTerm')
-   if(searchTermFromURL) setSearchTerm(searchTermFromURL)
-  }, [location.search])
-  
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchTermFromURL = urlParams.get("searchTerm");
+    if (searchTermFromURL) setSearchTerm(searchTermFromURL);
+  }, [location.search]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -26,7 +28,7 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-slate-200 shadow-md">
+    <header className="bg-slate-200 shadow-md dark:bg-gray-800">
       <div className="flex justify-between items-center max-w-6xl mx-auto p-3">
         <Link to="/">
           {" "}
@@ -53,6 +55,13 @@ export default function Header() {
           </button>
         </form>
         <ul className="flex gap-4">
+          <button onClick={toggleTheme}>
+            {isDarkMode ? (
+              <MdOutlineLightMode className="text-white text-lg" />
+            ) : (
+              <MdLightMode className="text-lg" />
+            )}
+          </button>
           <Link to="/">
             <li className="hidden sm:inline text-slate-700 hover:underline">
               Home
@@ -71,7 +80,7 @@ export default function Header() {
                 alt="UserProfile"
               />
             ) : (
-              <li className="text-slate-700 hover:underline">Signin</li>
+              <li className="text-slate-700 hover:underline">Sign in</li>
             )}
           </Link>
         </ul>

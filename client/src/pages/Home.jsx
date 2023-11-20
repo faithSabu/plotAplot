@@ -51,19 +51,19 @@ export default function Home() {
   return (
     <div>
       <div className="flex flex-col gap-6 py-28 px-3 max-w-6xl mx-auto">
-        <h1 className="text-slate-700 font-bold text-3xl lg:text-6xl">
-          Your<span className="text-slate-500"> Dream Home </span>Awaits.
+        <h1 className="text-slate-700 font-bold text-3xl lg:text-6xl dark:text-slate-300">
+          Your<span className="text-slate-500 dark:text-slate-400"> Dream Home </span>Awaits.
           <br />
           Find It Here
         </h1>
-        <div className="text-gray-400 text-xs sm:text-sm">
+        <div className="text-gray-400 text-xs sm:text-sm dark:text-slate-400">
           PlotAPlot is the perfect place to find your dream place to live.
           <br />
           We have a wide range of properties for you to choose from.
         </div>
         <Link
           to={"/search"}
-          className="text-xs sm:text-sm text-blue-800 font-bold hover:underline"
+          className="text-xs sm:text-sm text-blue-800 font-bold hover:underline dark:text-blue-400"
         >
           Let's get started...
         </Link>
@@ -89,12 +89,12 @@ export default function Home() {
         {offerListings.length > 0 && (
           <div>
             <div className="my-3">
-              <h2 className="text-2xl font-semibold text-slate-600">
+              <h2 className="text-2xl font-semibold text-slate-600 dark:text-slate-400">
                 Recent Offers
               </h2>
               <Link
                 to={"/search?offer=true"}
-                className="text-sm text-blue-800 hover:underline"
+                className="text-sm text-blue-800 hover:underline dark:text-blue-400"
               >
                 Show more offers
               </Link>
@@ -109,12 +109,12 @@ export default function Home() {
         {saleListings.length > 0 && (
           <div>
             <div className="my-3">
-              <h2 className="text-2xl font-semibold text-slate-600">
+              <h2 className="text-2xl font-semibold text-slate-600 dark:text-slate-400">
                 Recent places for Sale
               </h2>
               <Link
                 to={"/search?type=sale"}
-                className="text-sm text-blue-800 hover:underline"
+                className="text-sm text-blue-800 hover:underline dark:text-blue-400"
               >
                 Show more offers
               </Link>
@@ -129,12 +129,12 @@ export default function Home() {
         {rentListings.length > 0 && (
           <div>
             <div className="my-3">
-              <h2 className="text-2xl font-semibold text-slate-600">
+              <h2 className="text-2xl font-semibold text-slate-600 dark:text-slate-400">
                 Recent places for Rent
               </h2>
               <Link
                 to={"/search?type=rent"}
-                className="text-sm text-blue-800 hover:underline"
+                className="text-sm text-blue-800 hover:underline dark:text-blue-400"
               >
                 Show more offers
               </Link>

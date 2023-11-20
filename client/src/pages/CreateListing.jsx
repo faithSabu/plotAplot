@@ -158,7 +158,7 @@ export default function CreateListing() {
 
   return (
     <main className="p-3 max-w-4xl mx-auto">
-      <h1 className="text-3xl font-semibold text-center my-7">
+      <h1 className="text-3xl font-semibold text-center my-7 dark:text-white">
         Create a Listing
       </h1>
       <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4">
@@ -166,7 +166,7 @@ export default function CreateListing() {
           <input
             type="text"
             placeholder="Name"
-            className="border p-3 rounded-lg"
+            className="border p-3 rounded-lg dark:bg-neutral-700 dark:text-slate-200"
             id="name"
             maxLength="62"
             minLength="10"
@@ -177,7 +177,7 @@ export default function CreateListing() {
           <textarea
             type="text"
             placeholder="Description"
-            className="border p-3 rounded-lg"
+            className="border p-3 rounded-l dark:bg-neutral-700 dark:text-slate-200"
             id="description"
             required
             onChange={handleChange}
@@ -186,7 +186,7 @@ export default function CreateListing() {
           <input
             type="text"
             placeholder="Address"
-            className="border p-3 rounded-lg"
+            className="border p-3 rounded-lg dark:bg-neutral-700 dark:text-slate-200"
             id="address"
             required
             onChange={handleChange}
@@ -197,51 +197,51 @@ export default function CreateListing() {
               <input
                 type="checkbox"
                 id="sale"
-                className="w-5"
+                className="w-5 dark:accent-neutral-700"
                 onChange={handleChange}
                 checked={formData.type === "sale"}
               />
-              <span>Sell</span>
+              <span className="dark:text-white">Sell</span>
             </div>
             <div className="flex gap-2">
               <input
                 type="checkbox"
                 id="rent"
-                className="w-5"
+                className="w-5 dark:accent-neutral-700"
                 onChange={handleChange}
                 checked={formData.type === "rent"}
               />
-              <span>Rent</span>
+              <span className="dark:text-white">Rent</span>
             </div>
             <div className="flex gap-2">
               <input
                 type="checkbox"
                 id="parking"
-                className="w-5"
+                className="w-5 dark:accent-neutral-700"
                 onChange={handleChange}
                 checked={formData.parking}
               />
-              <span>Parking Spot</span>
+              <span className="dark:text-white">Parking Spot</span>
             </div>
             <div className="flex gap-2">
               <input
                 type="checkbox"
                 id="furnished"
-                className="w-5"
+                className="w-5 dark:accent-neutral-700"
                 onChange={handleChange}
                 checked={formData.furnished}
               />
-              <span>Furnished</span>
+              <span className="dark:text-white">Furnished</span>
             </div>
             <div className="flex gap-2">
               <input
                 type="checkbox"
                 id="offer"
-                className="w-5"
+                className="w-5 dark:accent-neutral-700"
                 onChange={handleChange}
                 checked={formData.offer}
               />
-              <span>Offer</span>
+              <span className="dark:text-white">Offer</span>
             </div>
           </div>
           <div className="flex flex-wrap gap-6">
@@ -252,11 +252,11 @@ export default function CreateListing() {
                 min={1}
                 max={10}
                 required
-                className="p-3 border border-gray-300 rounded-lg"
+                className="p-3 border border-gray-300 rounded-lg dark:bg-neutral-700 dark:text-slate-200"
                 onChange={handleChange}
                 value={formData.bedrooms}
               />
-              <p>Beds</p>
+              <p className="dark:text-white">Beds</p>
             </div>
             <div className="flex items-center gap-2">
               <input
@@ -265,11 +265,11 @@ export default function CreateListing() {
                 min={1}
                 max={10}
                 required
-                className="p-3 border border-gray-300 rounded-lg"
+                className="p-3 border border-gray-300 rounded-lg dark:bg-neutral-700 dark:text-slate-200"
                 onChange={handleChange}
                 value={formData.bathrooms}
               />
-              <p>Baths</p>
+              <p className="dark:text-white">Baths</p>
             </div>
             <div className="flex items-center gap-2">
               <input
@@ -278,15 +278,15 @@ export default function CreateListing() {
                 min={4000}
                 max={1000000000}
                 required
-                className="p-3 border border-gray-300 rounded-lg"
+                className="p-3 border border-gray-300 rounded-lg dark:bg-neutral-700 dark:text-slate-200"
                 onChange={handleChange}
                 value={formData.regularPrice}
               />
 
-              <div className="flex flex-col items-center">
+              <div className="flex flex-col items-center dark:text-white">
                 <p>Regular Price</p>
                 {formData.type === "rent" && (
-                  <span className="text-xs">(Rs. / month)</span>
+                  <span className="text-xs ">(Rs. / month)</span>
                 )}
               </div>
             </div>
@@ -298,11 +298,11 @@ export default function CreateListing() {
                   min={0}
                   max={1000000000}
                   required
-                  className="p-3 border border-gray-300 rounded-lg"
+                  className="p-3 border border-gray-300 rounded-lg dark:bg-neutral-700 dark:text-slate-200"
                   onChange={handleChange}
                   value={formData.discountPrice}
                 />
-                <div className="flex flex-col items-center">
+                <div className="flex flex-col items-center dark:text-white">
                   <p>Dicount Price</p>
                   {formData.type === "rent" && (
                     <span className="text-xs">(Rs. / month)</span>
@@ -314,16 +314,16 @@ export default function CreateListing() {
         </div>
 
         <div className="flex flex-col flex-1 gap-4">
-          <p className="font-semibold">
+          <p className="font-semibold dark:text-white">
             Images:
-            <span className="font-normal text-gray-600 ml-2">
+            <span className="font-normal text-gray-600 ml-2 dark:text-gray-400">
               The first image will be the cover (max 6)
             </span>
           </p>
           <div className="flex gap-4">
             <input
               onChange={(e) => setFiles(e.target.files)}
-              className="p-3 border borer-gray-300 rounded w-full"
+              className="p-3 border borer-gray-300 rounded w-full dark:text-slate-200"
               type="file"
               id="images"
               accept="image/*"

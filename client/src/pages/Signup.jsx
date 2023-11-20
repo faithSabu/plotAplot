@@ -44,26 +44,26 @@ export default function Signup() {
 
   return (
     <div className="p-3 max-w-lg mx-auto">
-      <h1 className="text-3xl text-center font-semibold my-7">Sign Up</h1>
+      <h1 className="text-3xl text-center font-semibold my-7 dark:text-white">Sign Up</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <input
           type="text"
           placeholder="username"
-          className="border p-3 rounded-lg"
+          className="border p-3 rounded-lg dark:bg-neutral-700 dark:text-slate-200"
           id="username"
           onChange={handleChange}
         />
         <input
           type="email"
           placeholder="Email"
-          className="border p-3 rounded-lg"
+          className="border p-3 rounded-lg dark:bg-neutral-700 dark:text-slate-200"
           id="email"
           onChange={handleChange}
         />
         <input
           type="password"
           placeholder="Password"
-          className="border p-3 rounded-lg"
+          className="border p-3 rounded-lg dark:bg-neutral-700 dark:text-slate-200"
           id="password"
           onChange={handleChange}
         />
@@ -76,9 +76,9 @@ export default function Signup() {
         <OAuth/>
       </form>
       <div className="flex gap-2 mt-5">
-        <p>Have an Account? </p>
+        <p className="dark:text-white">Have an Account? </p>
         <Link to={"/sign-in"}>
-          <span className="text-blue-700">Sign In</span>
+          <span className="text-blue-700 dark:text-blue-500">Sign In</span>
         </Link>
       </div>
       {error && <p className="text-red-500 mt-5">{error}</p>}

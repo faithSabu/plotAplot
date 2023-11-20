@@ -55,7 +55,7 @@ export default function Listing() {
 
   return (
     <main>
-      {loading && <p className="text-center my-7 text-2xl">Loading...</p>}
+      {loading && <p className="text-center my-7 text-2xl dark:text-slate-200">Loading...</p>}
       {error && (
         <p className="text-center my-7 text-2xl text-red-700">{error}</p>
       )}
@@ -92,14 +92,14 @@ export default function Listing() {
             </p>
           )}
           <div className="flex flex-col max-w-4xl mx-auto p-3 my-7 gap-4">
-            <p className="text-2xl font-semibold">
+            <p className="text-2xl font-semibold dark:text-white">
               {listing.name} - Rs.{" "}
               {listing.offer
                 ? listing.discountPrice.toLocaleString("en-IN")
                 : listing.regularPrice.toLocaleString("en-IN")}
               {listing.type === "rent" && " / month"}
             </p>
-            <p className="flex items-center mt-6 gap-2 text-slate-600 text-sm">
+            <p className="flex items-center mt-6 gap-2 text-slate-600 text-sm dark:text-slate-400">
               <FaMapMarkerAlt className="text-green-700" />
               {listing.address}
             </p>
@@ -117,11 +117,11 @@ export default function Listing() {
                 </p>
               )}
             </div>
-            <p className="text-slate-800">
-              <span className="font-semibold text-black">Description - </span>
+            <p className="text-slate-800 dark:text-slate-200">
+              <span className="font-semibold text-black dark:text-white">Description - </span>
               {listing.description}
             </p>
-            <ul className="text-green-900 font-semibold text-sm flex flex-wrap items-center gap-4 sm:gap-6">
+            <ul className="text-green-900 font-semibold text-sm flex flex-wrap items-center gap-4 sm:gap-6 dark:text-green-400">
               <li className="flex items-center gap-1 whitespace-nowrap">
                 <FaBed className="text-lg" />
                 {listing.bedrooms > 1

@@ -17,9 +17,11 @@ const useTheme = () => {
     if (localStorage.theme === "dark") {
       localStorage.theme = "light";
       document.documentElement.classList.remove("dark");
+      document.body.style.backgroundColor = "rgb(241, 245, 241)";
     } else {
       localStorage.theme = "dark";
       document.documentElement.classList.add("dark");
+      document.body.style.backgroundColor = "rgb(33, 36, 33)";
     }
     setIsDarkMode((prev) => !prev);
   };
@@ -27,9 +29,11 @@ const useTheme = () => {
   useEffect(() => {
     if (localStorage.theme === "dark") {
       document.documentElement.classList.add("dark");
+      document.body.style.backgroundColor = "rgb(33, 36, 33)";
       setIsDarkMode(true);
     } else {
       document.documentElement.classList.remove("dark");
+      document.body.style.backgroundColor = "rgb(241, 245, 241)";
     }
   }, []);
 

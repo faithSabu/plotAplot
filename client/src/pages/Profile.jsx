@@ -39,6 +39,7 @@ export default function Profile() {
   const [deleteListingErr, setDeleteListingErr] = useState({});
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deleteInfo, setDeleteInfo] = useState(null);
+  const [deleteListingInfo, setDeleteListingInfo] = useState(null);
   const [isSignoutModalOpen, setIsSignoutModalOpen] = useState(false);
 
   useEffect(() => {
@@ -151,6 +152,7 @@ export default function Profile() {
   };
 
   const handleDeleteUserListing = async (listingId) => {
+    handleDeleteModalClose();
     try {
       const res = await fetch(`api/listing/delete/${listingId}`, {
         method: "DELETE",
@@ -185,6 +187,14 @@ export default function Profile() {
     setIsDeleteModalOpen(true);
   };
 
+  const handleDeleteListingInfo = (listingId) => {
+    setDeleteInfo({
+      onDelete: () => handleDeleteUserListing(listingId),
+      onClose: handleDeleteModalClose,
+    });
+    setIsDeleteModalOpen(true);
+  };
+
   const handleSignoutModalClose = () => {
     setIsSignoutModalOpen(false);
   };
@@ -192,7 +202,9 @@ export default function Profile() {
   return (
     <>
       <div className="p-3 max-w-lg mx-auto">
-        <h1 className="text-3xl font-semibold text-center my-7">Profile</h1>
+        <h1 className="text-3xl font-semibold text-center my-7 dark:text-white">
+          Profile
+        </h1>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <input
             onChange={(e) => setFile(e.target.files[0])}
@@ -227,7 +239,7 @@ export default function Profile() {
             placeholder="username"
             defaultValue={currentUser.username}
             id="username"
-            className="border p-3 rounded-lg"
+            className="border p-3 rounded-lg dark:bg-neutral-700 dark:text-slate-200"
             onChange={handleChange}
           />
           <input
@@ -235,14 +247,14 @@ export default function Profile() {
             placeholder="email"
             defaultValue={currentUser.email}
             id="email"
-            className="border p-3 rounded-lg"
+            className="border p-3 rounded-lg dark:bg-neutral-700 dark:text-slate-200"
             onChange={handleChange}
           />
           <input
             type="password"
             placeholder="password"
             id="password"
-            className="border p-3 rounded-lg"
+            className="border p-3 rounded-lg dark:bg-neutral-700 dark:text-slate-200"
             onChange={handleChange}
           />
           <button
@@ -261,13 +273,13 @@ export default function Profile() {
         <div className="flex justify-between mt-5">
           <span
             onClick={handleDeleteInfo}
-            className="text-red-700 cursor-pointer"
+            className="text-red-700 cursor-pointer dark:text-red-500"
           >
             Delete Account
           </span>
           <span
             onClick={() => setIsSignoutModalOpen(true)}
-            className="text-red-700 cursor-pointer"
+            className="text-red-700 cursor-pointer dark:text-red-500"
           >
             Sign Out
           </span>
@@ -277,7 +289,10 @@ export default function Profile() {
         {updateSuccess && (
           <p className="text-green-700 mt-5">User updated successfully!!</p>
         )}
-        <button onClick={handleShowListings} className="text-green-700 w-full">
+        <button
+          onClick={handleShowListings}
+          className="text-green-700 w-full dark:text-green-500"
+        >
           Show Listings
         </button>
         {showListingsErr && (
@@ -286,12 +301,12 @@ export default function Profile() {
 
         {userListings && userListings.length > 0 && (
           <div className="flex flex-col gap-4">
-            <h1 className="text-center mt-7 text-3xl font-semibold">
+            <h1 className="text-center mt-7 text-3xl font-semibold dark:text-white">
               Your Listings
             </h1>
             {userListings.map((listing) => (
               <div key={listing._id} className="border rounded-lg p-3 gap-4">
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center gap-2">
                   <Link to={`/listing/${listing._id}`}>
                     <img
                       src={listing.imageURLs[0]}
@@ -300,7 +315,7 @@ export default function Profile() {
                     />
                   </Link>
                   <Link
-                    className="text-slate-700 font-semibold hover:underline truncate flex-1"
+                    className="text-slate-700 font-semibold hover:underline truncate flex-1 dark:text-slate-300"
                     to={`/listing/${listing._id}`}
                   >
                     <p>{listing.name}</p>
@@ -308,14 +323,14 @@ export default function Profile() {
 
                   <div className="flex flex-col items-center">
                     <button
-                      onClick={() => handleDeleteUserListing(listing._id)}
-                      className="text-red-700 uppercase"
+                      onClick={() => handleDeleteListingInfo(listing._id)}
+                      className="text-red-700 uppercase dark:text-red-500"
                     >
                       Delete
                     </button>
                     <button
                       onClick={() => navigate(`/update-listing/${listing._id}`)}
-                      className="text-green-700 uppercase"
+                      className="text-green-700 uppercase dark:text-green-500"
                     >
                       Edit
                     </button>

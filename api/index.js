@@ -6,6 +6,7 @@ import userRouter from "./routes/user.route.js";
 import authRouter from "./routes/auth.route.js";
 import listingRouter from "./routes/listing.route.js";
 import chatRouter from "./routes/chat.route.js";
+import messageRouter from "./routes/message.route.js";
 import path from "path";
 
 const app = express();
@@ -35,6 +36,7 @@ app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/listing", listingRouter);
 app.use("/api/chat", chatRouter);
+app.use("/api/message", messageRouter);
 
 app.use(express.static(path.join(__dirname, "/client/dist")));
 

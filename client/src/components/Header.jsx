@@ -4,9 +4,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import useTheme from "../hooks/useTheme";
+import { useLocation } from "react-router-dom";
 
 export default function Header() {
   const navigate = useNavigate();
+  const location = useLocation();
+
   const { isDarkMode, toggleTheme } = useTheme();
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -62,11 +65,13 @@ export default function Header() {
               <MdLightMode className="text-slate-700 text-lg" />
             )}
           </button>
-          <Link to="/">
-            <li className="hidden sm:inline text-slate-700 hover:underline dark:text-neutral-300">
-              Home
-            </li>
-          </Link>{" "}
+          {location.pathname !== "/" && (
+            <Link to="/">
+              <li className="hidden sm:inline text-slate-700 hover:underline dark:text-neutral-300">
+                Home
+              </li>
+            </Link>
+          )}{" "}
           <Link to="/about">
             <li className="hidden sm:inline text-slate-700 hover:underline dark:text-neutral-300">
               About
@@ -80,7 +85,9 @@ export default function Header() {
                 alt="UserProfile"
               />
             ) : (
-              <li className="text-slate-700 hover:underline dark:text-neutral-300">Sign in</li>
+              <li className="text-slate-700 hover:underline dark:text-neutral-300">
+                Sign in
+              </li>
             )}
           </Link>
         </ul>

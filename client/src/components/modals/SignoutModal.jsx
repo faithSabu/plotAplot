@@ -18,7 +18,7 @@ export default function SignoutModal({ onSignout, onClose }) {
           isMounted && "animate-slideIn"
         }`}
       >
-        <div className="flex flex-col justify-center items-center gap-5 border px-5 sm:px-24 py-8 border-slate-400 rounded-lg bg-slate-200 hover:shadow-md transition-shadow dark:bg-gray-800">
+        <div className="flex flex-col justify-center items-center gap-5 border px-5 sm:px-10 py-8 border-slate-400 rounded-lg bg-slate-200 hover:shadow-md transition-shadow dark:bg-gray-800">
           <h1 className="text-2xl font-semibold uppercase text-red-700 dark:text-red-400">
             Sign Out
           </h1>

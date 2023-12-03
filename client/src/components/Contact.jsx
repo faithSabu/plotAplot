@@ -44,7 +44,7 @@ export default function Contact({ listing }) {
             placeholder="Enter your message here..."
             value={message}
             onChange={handleMessageChange}
-            className="w-full border p-3 rounded-lg dark:bg-neutral-700"
+            className="w-full border p-3 rounded-lg dark:bg-neutral-700 dark:text-slate-200"
           ></textarea>
 
           <Link

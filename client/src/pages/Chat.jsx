@@ -25,8 +25,8 @@ export default function Chat() {
 
   return (
     <div className="flex flex-1">
-      <div className="w-1/4 bg-slate-100 border-r-2 border-slate-300">
-        <div className="text-slate-600  text-lg font-semibold px-3 h-16 uppercase flex items-center ">
+      <div className="w-1/4 bg-slate-100 border-r-2 border-slate-300 dark:bg-gray-900 dark:border-slate-600">
+        <div className="text-slate-600 text-lg font-semibold px-3 h-16 uppercase flex items-center dark:text-white">
           Chats
         </div>
         <div className="">
@@ -38,12 +38,12 @@ export default function Chat() {
         </div>
       </div>
       {currentChat ? (
-        <div className="flex flex-col flex-1 bg-slate-300">
+        <div className="flex flex-col flex-1 bg-slate-300 dark:bg-slate-700">
           <Conversations chat={currentChat} currentUserId={currentUser._id} />
         </div>
       ) : (
-        <div className="bg-slate-300 flex justify-center items-center w-full">
-          <span className="text-lg text-slate-700">Grab your best plot through Plot-A-Plot...</span>
+        <div className="bg-slate-300 flex justify-center items-center w-full dark:bg-slate-700">
+          <span className="text-lg text-slate-700 dark:text-slate-300">Grab your best plot through Plot-A-Plot...</span>
         </div>
       )}
     </div>

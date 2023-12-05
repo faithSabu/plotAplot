@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import ChatSummary from "../components/ChatSummary";
 import Conversations from "../components/Conversations";
 import { useSelector } from "react-redux";
+import { io } from "socket.io-client";
 
 export default function Chat() {
   const { currentUser, loading, error } = useSelector((state) => state.user);
 
   const [chats, setChats] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
+  const [onlineUsers, setOnlineUsers] = useState([]);
 
   useEffect(() => {
     try {
@@ -16,12 +18,19 @@ export default function Chat() {
         const data = await res.json();
         setChats(data);
       };
-
       userChats();
     } catch (error) {
       console.log(error);
     }
   }, []);
+
+  useEffect(() => {
+    const socket = io("http://localhost:8000");
+    socket.emit("new_user_add", currentUser._id);
+    socket.on("get_users", (users) => {
+      setOnlineUsers(users);
+    });
+  }, [currentUser]);
 
   return (
     <div className="flex flex-1">
@@ -32,6 +41,7 @@ export default function Chat() {
         <div className="">
           {chats.map((chat) => (
             <div onClick={() => setCurrentChat(chat)}>
+              {console.log(chat, "currentChat___")}
               <ChatSummary data={chat} currentUserId={currentUser._id} />
             </div>
           ))}
@@ -43,7 +53,9 @@ export default function Chat() {
         </div>
       ) : (
         <div className="bg-slate-300 flex justify-center items-center w-full dark:bg-slate-700">
-          <span className="text-lg text-slate-700 dark:text-slate-300">Grab your best plot through Plot-A-Plot...</span>
+          <span className="text-lg text-slate-700 dark:text-slate-300">
+            Grab your best plot through Plot-A-Plot...
+          </span>
         </div>
       )}
     </div>

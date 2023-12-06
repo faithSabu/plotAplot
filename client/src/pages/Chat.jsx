@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ChatSummary from "../components/ChatSummary";
 import Conversations from "../components/Conversations";
 import { useSelector } from "react-redux";
 import { io } from "socket.io-client";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function Chat() {
   const { currentUser, loading, error } = useSelector((state) => state.user);
@@ -10,6 +11,25 @@ export default function Chat() {
   const [chats, setChats] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
+  const [sendMessage, setSendMessage] = useState(null);
+  const [receiveMessage, setReceiveMessage] = useState(null);
+  const socket = useRef();
+  const params = useParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const chatId = params.chatId;
+
+    const handleCurrentChat = async () => {
+      const data = await fetch(`/api/chat/findByChatId/${chatId}`);
+      const res = await data.json();
+      setCurrentChat(res);
+    };
+
+    if (chatId) {
+      handleCurrentChat();
+    }
+  }, [params.chatId]);
 
   useEffect(() => {
     try {
@@ -25,23 +45,51 @@ export default function Chat() {
   }, []);
 
   useEffect(() => {
-    const socket = io("http://localhost:8000");
-    socket.emit("new_user_add", currentUser._id);
-    socket.on("get_users", (users) => {
+    socket.current = io("http://localhost:8000");
+    socket.current.emit("new_user_add", currentUser._id);
+    socket.current.on("get_users", (users) => {
       setOnlineUsers(users);
     });
+
+    // return() => {
+    //   socket.current.emit("disconnect")
+    // }
   }, [currentUser]);
 
+  useEffect(() => {
+    if (sendMessage) {
+      socket.current.emit("send_messages", sendMessage);
+    }
+
+    return () => {
+      socket.current.off("send_messages");
+    };
+  }, [sendMessage]);
+
+  useEffect(() => {
+    socket.current.on("receive_messge", (data) => {
+      setReceiveMessage(data);
+    });
+
+    return () => {
+      socket.current.off("receive_messge");
+    };
+  }, []);
+
   return (
-    <div className="flex flex-1">
+    <div className="flex flex-1 max-h-[calc(100vh-72px)]">
       <div className="w-1/4 bg-slate-100 border-r-2 border-slate-300 dark:bg-gray-900 dark:border-slate-600">
         <div className="text-slate-600 text-lg font-semibold px-3 h-16 uppercase flex items-center dark:text-white">
           Chats
         </div>
         <div className="">
           {chats.map((chat) => (
-            <div onClick={() => setCurrentChat(chat)}>
-              {console.log(chat, "currentChat___")}
+            <div
+              key={chat._id}
+              onClick={() => {
+                navigate(`/chat/${chat._id}`);
+              }}
+            >
               <ChatSummary data={chat} currentUserId={currentUser._id} />
             </div>
           ))}
@@ -49,7 +97,12 @@ export default function Chat() {
       </div>
       {currentChat ? (
         <div className="flex flex-col flex-1 bg-slate-300 dark:bg-slate-700">
-          <Conversations chat={currentChat} currentUserId={currentUser._id} />
+          <Conversations
+            chat={currentChat}
+            currentUserId={currentUser._id}
+            setSendMessage={setSendMessage}
+            receiveMessage={receiveMessage}
+          />
         </div>
       ) : (
         <div className="bg-slate-300 flex justify-center items-center w-full dark:bg-slate-700">

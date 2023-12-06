@@ -349,7 +349,7 @@ export default function UpdateListing() {
               type="button"
               disabled={uploadingImg}
               onClick={handleImageSubmit}
-              className="p-3 text-green-700 border border-green-700 rounded uppercase hover:shadow-lg disabled:opacity-80"
+              className="p-3 text-green-700 border border-green-700 rounded uppercase hover:shadow-lg disabled:opacity-80 dark:text-green-500 dark:hover:text-green-400"
             >
               {uploadingImg ? "Uploading..." : "Upload"}
             </button>
@@ -371,7 +371,7 @@ export default function UpdateListing() {
                 <button
                   type="button"
                   onClick={() => handleRemoveImage(index)}
-                  className="p-3 text-red-700 rounded-lg uppercase hover:opacity-60"
+                  className="p-3 text-red-700 rounded-lg uppercase hover:opacity-60 dark:text-red-500 dark:hover:text-red-600"
                 >
                   Delete
                 </button>

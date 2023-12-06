@@ -31,7 +31,7 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-slate-200 shadow-md dark:bg-gray-800">
+    <header className="bg-slate-200 shadow-md dark:bg-gray-800 h-[72px]">
       <div className="flex justify-between items-center max-w-6xl mx-auto p-3">
         <Link to="/">
           {" "}

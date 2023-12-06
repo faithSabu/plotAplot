@@ -53,6 +53,22 @@ export default function Listing() {
     }
   }, [params.listingId]);
 
+  const routeToChat = async (receiverId) => {
+    const res = await fetch("/api/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        senderId: currentUser._id,
+        receiverId,
+      }),
+    });
+    const data = await res.json();
+
+    navigate(`/chat/${data.chat._id}`);
+  };
+
   return (
     <main>
       {loading && (
@@ -161,7 +177,7 @@ export default function Listing() {
                   </button>
                 )}
                 <button
-                  onClick={() => navigate("/chat")}
+                  onClick={() => routeToChat(listing.userRef)}
                   className="bg-slate-700 text-white rounded-lg uppercase hover:opacity-90 p-3 w-full"
                 >
                   Chat with LandLord

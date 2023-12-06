@@ -36,6 +36,7 @@ export default function App() {
               element={<UpdateListing />}
             />
             <Route path="/chat" element={<Chat />} />
+            <Route path="/chat/:chatId" element={<Chat />} />
           </Route>
         </Routes>
       </Layout>

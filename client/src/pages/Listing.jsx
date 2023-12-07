@@ -66,7 +66,9 @@ export default function Listing() {
     });
     const data = await res.json();
 
-    navigate(`/chat/${data.chat._id}`);
+    if (data?.chat?._id) {
+      navigate(`/chat/${data?.chat?._id}`);
+    }
   };
 
   return (

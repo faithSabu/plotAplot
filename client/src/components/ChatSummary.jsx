@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-export default function ChatSummary({ data, currentUserId }) {
+export default function ChatSummary({ data, currentUserId,online }) {
   const [memberData, setMemberData] = useState(null);
 
   useEffect(() => {
@@ -34,7 +34,7 @@ export default function ChatSummary({ data, currentUserId }) {
                 {memberData.username}
               </span>
               <span className="text-xs text-slate-600 dark:text-slate-500">
-                online
+                { online ? "Online" : "Offline"}
               </span>
             </div>
           </div>

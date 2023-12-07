@@ -8,10 +8,12 @@ export default function Conversations({
   currentUserId,
   setSendMessage,
   receiveMessage,
+  online,
 }) {
   const [memberData, setMemberData] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+  const [scrollBehavior, setScrollBehavior] = useState("instant");
   const scroll = useRef();
 
   useEffect(() => {
@@ -52,6 +54,10 @@ export default function Conversations({
     setNewMessage(e);
   };
 
+  const updateChatTime = async () => {
+    await fetch(`/api/chat/changeUpdatedTime/${chat._id}`);
+  };
+
   const handleSubmit = async (e) => {
     if (!newMessage.trim()) {
       return;
@@ -76,10 +82,15 @@ export default function Conversations({
     // sending message to socket server
     const receiverId = chat.members.find((id) => id !== currentUserId);
     setSendMessage({ data, receiverId });
+
+    updateChatTime();
   };
 
   useEffect(() => {
-    scroll.current?.scrollIntoView({ behavior: "smooth" });
+    scroll.current?.scrollIntoView({ behavior: scrollBehavior });
+    setTimeout(() => {
+      setScrollBehavior("smooth");
+    }, 500);
   }, [messages]);
 
   return (
@@ -94,8 +105,8 @@ export default function Conversations({
           <span className="text-slate-700 dark:text-slate-300">
             {memberData?.username}
           </span>
-          <span className="text-xs text-slate-600 dark:text-slate-400">
-            online
+          <span className="text-xs text-slate-600 dark:text-slate-500">
+            {online ? "Online" : "Offline"}
           </span>
         </div>
       </div>

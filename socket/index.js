@@ -9,6 +9,7 @@ let activeUsers = [];
 io.on("connection", (socket) => {
   // add new user
   socket.on("new_user_add", (newUserId) => {
+    console.log(newUserId,'newUserId');
     const existingUser = activeUsers.find((user) => user.userId === newUserId);
     if (existingUser) {
       existingUser.socketId = socket.id;
@@ -29,9 +30,7 @@ io.on("connection", (socket) => {
 
     if (user) {
       io.to(user.socketId).emit("receive_messge", data);
-    } else {
-      console.log("No user to send message", user);
-    }
+    } 
   });
 
   socket.on("disconnect", () => {

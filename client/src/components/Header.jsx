@@ -1,20 +1,24 @@
 import { FaSearch } from "react-icons/fa";
 import { MdOutlineLightMode, MdLightMode } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import useTheme from "../hooks/useTheme";
 import { useLocation } from "react-router-dom";
+import { FaRegMessage } from "react-icons/fa6";
+import socket from "../utils/socketService";
+import { setActiveUsers } from "../redux/socket/socketSlice";
 
 export default function Header() {
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch();
 
   const { isDarkMode, toggleTheme } = useTheme();
 
   const [searchTerm, setSearchTerm] = useState("");
 
-  const { currentUser } = useSelector((state) => state.user); // In state.user -> The "user" is the name of the slice we already created
+  const { currentUser } = useSelector((state) => state.user);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -29,6 +33,29 @@ export default function Header() {
     const searchQuery = urlParams.toString();
     navigate(`/search?${searchQuery}`);
   };
+
+  useEffect(() => {
+    socket.emit("new_user_add", currentUser?._id);
+
+    socket.on("get_users", (users) => {
+      dispatch(setActiveUsers(users));
+    });
+    
+    return () => {
+      socket.off("new_user_add");
+      socket.off("get_users");
+    };
+  }, [currentUser]);
+  
+  useEffect(() => {
+    socket.on("receive_messge", (data) => {
+      alert('msg received')
+    });
+
+    return () => {
+      socket.off("receive_messge");
+    };
+  }, []);
 
   return (
     <header className="bg-slate-200 shadow-md dark:bg-gray-800 h-[72px]">
@@ -72,11 +99,21 @@ export default function Header() {
               </li>
             </Link>
           )}{" "}
-          <Link to="/about">
-            <li className="hidden sm:inline text-slate-700 hover:underline dark:text-neutral-300">
-              About
-            </li>
-          </Link>{" "}
+          {location.pathname !== "/about" && (
+            <Link to="/about">
+              <li className="hidden sm:inline text-slate-700 hover:underline dark:text-neutral-300">
+                About
+              </li>
+            </Link>
+          )}
+          {location.pathname !== "/chat" && (
+            <Link to="/chat">
+              <li className="text-slate-700 hover:underline dark:text-neutral-300">
+                <span className="hidden sm:inline">Message</span>
+                <FaRegMessage className="inline sm:hidden" />
+              </li>
+            </Link>
+          )}
           <Link to="/profile">
             {currentUser ? (
               <img

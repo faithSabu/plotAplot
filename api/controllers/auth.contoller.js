@@ -46,9 +46,9 @@ export const google = async (req, res, next) => {
     } else {
       const generatedPassword = Math.random().toString(36).slice(-8); // 36 -> 0-9 and a-z; slice for getting 8 characteres removing decimal point
       const hashedPassword = bcryptjs.hashSync(generatedPassword, 10);
-      const modifiedUsername =
-        req.body.name.split(" ").join("").toLowerCase() +
-        Math.random().toString(36).slice(-4);
+      const modifiedUsername = req.body.name;
+      // req.body.name.split(" ").join("").toLowerCase() +
+      // Math.random().toString(36).slice(-4);
       const newUser = new User({
         username: modifiedUsername,
         email: req.body.email,

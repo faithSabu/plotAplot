@@ -86,7 +86,7 @@ export default function UpdateListing() {
         (snapshot) => {
           const progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log(progress);
+          console.info(progress);
         },
         (error) => {
           reject(error);

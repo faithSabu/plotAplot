@@ -24,10 +24,11 @@ import DeleteModal from "../components/modals/DeleteModal";
 import SignoutModal from "../components/modals/SignoutModal";
 
 export default function Profile() {
+  const { currentUser, loading, error } = useSelector((state) => state.user);
   const fileRef = useRef(null);
+  const listingsRef = useRef(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { currentUser, loading, error } = useSelector((state) => state.user);
 
   const [file, setFile] = useState(undefined);
   const [filePercent, setFilePercent] = useState(0);
@@ -47,6 +48,15 @@ export default function Profile() {
       handleFileUpload(file);
     }
   }, [file]);
+
+  useEffect(() => {
+    userListings.length > 0 &&
+      listingsRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [userListings]);
+
+  useEffect(()=> {
+
+  },[])
 
   const handleFileUpload = (file) => {
     const storage = getStorage(app);
@@ -202,7 +212,7 @@ export default function Profile() {
   return (
     <>
       <div className="p-3 w-full max-w-lg mx-auto">
-        <h1 className="text-3xl font-semibold text-center my-7 dark:text-white">
+        <h1 className="text-3xl font-semibold text-center my-3 dark:text-white">
           Profile
         </h1>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -216,12 +226,16 @@ export default function Profile() {
           <img
             onClick={() => fileRef.current.click()}
             className="rounded-full h-24 w-25 object-cover cursor-pointer self-center mt-2"
-            src={formData.avatar || currentUser.avatar}
+            src={
+              currentUser
+                ? currentUser?.avatar
+                : import.meta.env.VITE_DEFAULT_AVATAR
+            }
             alt="profilePic"
           />
           <p className="text-sm self-center">
             {fileUploadErr ? (
-              <span className="text-red-700">
+              <span className="text-red-700 dark:text-red-500">
                 Image Upload Error (Image must be less than 2 MB)
               </span>
             ) : filePercent > 0 && filePercent < 100 ? (
@@ -285,7 +299,7 @@ export default function Profile() {
           </span>
         </div>
 
-        {error && <p className="text-red-700 mt-5">{error}</p>}
+        {error && <p className="text-red-700 dark:text-red-500 mt-5">{error}</p>}
         {updateSuccess && (
           <p className="text-green-700 mt-5">User updated successfully!!</p>
         )}
@@ -293,15 +307,18 @@ export default function Profile() {
           onClick={handleShowListings}
           className="text-green-700 w-full dark:text-green-500"
         >
-          Show Listings
+          Show My Listings
         </button>
         {showListingsErr && (
-          <p className="text-sm text-red-700">{showListingsErr}</p>
+          <p className="text-sm text-red-700 dark:text-red-500">{showListingsErr}</p>
         )}
 
         {userListings && userListings.length > 0 && (
           <div className="flex flex-col gap-4">
-            <h1 className="text-center mt-7 text-3xl font-semibold dark:text-white">
+            <h1
+              ref={listingsRef}
+              className="text-center mt-7 text-3xl font-semibold dark:text-white"
+            >
               Your Listings
             </h1>
             {userListings.map((listing) => (
@@ -338,7 +355,7 @@ export default function Profile() {
                 </div>
                 {deleteListingErr &&
                   deleteListingErr.listingId === listing._id && (
-                    <p className="text-red-700 text-sm text-center">
+                    <p className="text-red-700 dark:text-red-500 text-sm text-center">
                       Error Deleting - {deleteListingErr.errMessage}
                     </p>
                   )}

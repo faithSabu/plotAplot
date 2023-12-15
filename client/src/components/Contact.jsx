@@ -9,7 +9,7 @@ export default function Contact({ listing }) {
   useEffect(() => {
     try {
       const getLandlord = async () => {
-        const res = await fetch(`/api/user/${listing.userRef}`);
+        const res = await fetch(`/api/user/getUser/${listing.userRef}`);
         const data = await res.json();
         if (data.success === false) {
           setGetLandlordErr(data.message);

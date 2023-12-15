@@ -3,25 +3,36 @@ import ChatSummary from "../components/ChatSummary";
 import Conversations from "../components/Conversations";
 import { useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import socket from "../utils/socketService";
 
 export default function Chat() {
   const { currentUser, loading, error } = useSelector((state) => state.user);
-  const { activeUsers } = useSelector((state) => state.socketReducer);
+  const { activeUsers } = useSelector((state) => state.socket);
+  const { noOfMessages, latestChat } = useSelector((state) => state.chat);
 
   const [chats, setChats] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
-  const [sendMessage, setSendMessage] = useState(null);
-  const [receiveMessage, setReceiveMessage] = useState(null);
   const [loadingChats, setLoadingChats] = useState(false);
   const params = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (chats && latestChat) {
+      const chatsCopy = [...chats];
+      const index = chatsCopy.findIndex((chat) => chat._id === latestChat);
+      const removedChat = chatsCopy.splice(index, 1);
+      chatsCopy.unshift(removedChat[0]);
+
+      setChats(chatsCopy);
+    }
+  }, [latestChat]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
     const chatId = params.chatId;
 
     const handleCurrentChat = async () => {
-      const data = await fetch(`/api/chat/findByChatId/${chatId}`);
+      const data = await fetch(`/api/chat/findByChatId/${chatId}`, { signal });
       const res = await data.json();
       setCurrentChat(res);
     };
@@ -29,42 +40,26 @@ export default function Chat() {
     if (chatId) {
       handleCurrentChat();
     }
+
+    return () => {
+      controller.abort();
+    };
   }, [params.chatId]);
 
   useEffect(() => {
-    setLoadingChats(true);
-    try {
-      const userChats = async () => {
-        const res = await fetch(`/api/chat/${currentUser._id}`);
+    const userChats = async () => {
+      setLoadingChats(true);
+      try {
+        const res = await fetch(`/api/chat/userChats/${currentUser._id}`);
         const data = await res.json();
         setChats(data);
         setLoadingChats(false);
-      };
-      userChats();
-    } catch (error) {
-      setLoadingChats(false);
-      console.log(error);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (sendMessage) {
-      socket.emit("send_messages", sendMessage);
-    }
-
-    return () => {
-      socket.off("send_messages");
+      } catch (error) {
+        console.error(error);
+        setLoadingChats(false);
+      }
     };
-  }, [sendMessage]);
-
-  useEffect(() => {
-    socket.on("receive_messge", (data) => {
-      setReceiveMessage(data);
-    });
-
-    return () => {
-      socket.off("receive_messge");
-    };
+    currentUser && userChats();
   }, []);
 
   const checkOnlineStatus = (chat) => {
@@ -75,17 +70,28 @@ export default function Chat() {
     return online ? true : false;
   };
 
+  const checkMessageNum = (chatId) => {
+    const num = noOfMessages?.find((item) => item.chatId === chatId);
+
+    const result = num ? num.messageCount : 0;
+    return result;
+  };
+
   if (loadingChats) {
     return (
       <div className="flex items-center justify-center text-slate-600 font-semibold dark:text-white mt-10">
         Loading Chats ...
       </div>
-    ); 
+    );
   }
 
   return (
     <div className="flex flex-1 max-h-[calc(100vh-72px)]">
-      <div className="w-1/4 bg-slate-100 border-r-2 border-slate-300 dark:bg-gray-900 dark:border-slate-600">
+      <div
+        className={`w-1/4 bg-slate-100 border-r-2 border-slate-300 dark:bg-gray-900 dark:border-slate-600 ${
+          chats.length > 0 ? "w-1/4 min-w-fit" : "w-1/5"
+        }`}
+      >
         <div className="text-slate-600 text-lg font-semibold px-3 h-16 uppercase flex items-center dark:text-white">
           Chats
         </div>
@@ -98,20 +104,22 @@ export default function Chat() {
               }}
             >
               <ChatSummary
-                data={chat}
+                key={chat._id}
+                chat={chat}
                 currentUserId={currentUser._id}
                 online={checkOnlineStatus(chat)}
+                messageNumber={checkMessageNum(chat._id)}
               />
             </div>
           ))
         ) : (
-          <div className="text-center text-slate-700 dark:text-slate-300 p-3 mt-16">
+          <div className="text-center text-slate-700 dark:text-slate-300 p-3 mt-16 max-w-xs">
             You haven't made any connections. Visit any listing to get in touch
             with the landlord.
             <Link to="/search">
-              <button className="text-blue-600 hover:text-blue-500 font-semibold hover:underline mt-2">
+              <div className="text-blue-600 hover:text-blue-500 font-semibold hover:underline mt-2">
                 Go to Listings
-              </button>
+              </div>
             </Link>
           </div>
         )}
@@ -119,10 +127,9 @@ export default function Chat() {
       {currentChat ? (
         <div className="flex flex-col flex-1 bg-slate-300 dark:bg-slate-700">
           <Conversations
+            key={currentChat._id}
             chat={currentChat}
             currentUserId={currentUser._id}
-            setSendMessage={setSendMessage}
-            receiveMessage={receiveMessage}
             online={checkOnlineStatus(currentChat)}
           />
         </div>

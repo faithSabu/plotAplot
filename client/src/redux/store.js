@@ -3,10 +3,12 @@ import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import userReducer from "./user/userSlice";
 import socketReducer from "./socket/socketSlice";
+import chatReducer from "./user/chatSlice";
 
 const rootReducer = combineReducers({
   user: userReducer,
-  socketReducer: socketReducer,
+  socket: socketReducer,
+  chat: chatReducer,
 });
 
 const persistConfig = {
@@ -26,4 +28,3 @@ export const store = configureStore({
 });
 
 export const persistor = persistStore(store);
-

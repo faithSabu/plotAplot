@@ -120,11 +120,13 @@ export default function Search() {
       <div className="p-7 border-b-2 md:border-r-2 dark:border-slate-700 md:min-h-screen">
         <form onSubmit={handleSubmit} className="flex flex-col gap-8">
           <div className="flex items-center gap-2">
-            <label className="whitespace-nowrap dark:text-white">Search Term: </label>
+            <label className="whitespace-nowrap dark:text-white">
+              Search Term:{" "}
+            </label>
             <input
               type="text"
               id="searchTerm"
-              placeholder="Search..."
+              placeholder="Search by Plot name..."
               className="border rounded-lg p-3 w-full dark:bg-neutral-700 dark:text-slate-200"
               value={sidebarData.searchTerm}
               onChange={handleChange}

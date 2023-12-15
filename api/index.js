@@ -20,7 +20,7 @@ const __dirname = path.resolve();
 mongoose
   .connect(process.env.MONGO)
   .then(() => {
-    console.log("Connected to MongoDB");
+    console.info("Connected to MongoDB");
   })
   .catch((err) => {
     console.error(err);
@@ -29,7 +29,7 @@ mongoose
 const PORT = 3000;
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.info(`Server is running on port ${PORT}`);
 });
 
 app.use("/api/user", userRouter);

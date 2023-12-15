@@ -168,7 +168,8 @@ export default function Listing() {
               </li>
             </ul>
             {contact && <Contact listing={listing} />}
-            {currentUser && listing.userRef !== currentUser._id && (
+            {currentUser ? 
+            currentUser && listing.userRef !== currentUser._id && (
               <div className="flex justify-between items-center gap-4">
                 {!contact && (
                   <button
@@ -185,7 +186,11 @@ export default function Listing() {
                   Chat with LandLord
                 </button>
               </div>
-            )}
+            )
+            : <button onClick={()=> navigate('/sign-in')} className="bg-slate-700 text-white rounded-lg uppercase hover:opacity-90 p-3 w-full text-center">
+              Please Signin to Chat with Landlord
+            </button>
+            }
           </div>
         </>
       )}

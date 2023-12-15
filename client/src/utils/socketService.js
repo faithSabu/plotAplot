@@ -1,14 +1,11 @@
-// src/socketService.js
-import { useDispatch, useSelector } from "react-redux";
-import socketIOClient from "socket.io-client";
-import { store } from "../redux/store";
+import io from "socket.io-client";
 
 const ENDPOINT = "http://localhost:8000";
 
-const socket = socketIOClient(ENDPOINT);
+const socket = io(ENDPOINT);
 
 socket.on("connect", () => {
-  console.log("Connected to server");
+  console.info("Connected to server");
 });
 
 export default socket;

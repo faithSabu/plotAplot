@@ -113,7 +113,7 @@ export default function Header() {
     } catch (error) {
       console.error(error);
     }
-  }, []);
+  }, [currentUser]);
 
   useEffect(() => {
     dispatch(updateChatNumber(messageNum.length));

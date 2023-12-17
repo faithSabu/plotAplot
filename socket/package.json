@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "nodemon": "^3.0.2",
+    "plot-a-plot": "file:..",
     "socket.io": "^4.7.2"
   }
-}
+} 

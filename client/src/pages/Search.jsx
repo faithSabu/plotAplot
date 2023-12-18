@@ -48,6 +48,7 @@ export default function Search() {
         setListings(data);
         setLoading(false);
         if (data.length > 8) setShowMore(true);
+        else setShowMore(false);
       } catch (error) {
         setLoading(false);
         console.error(error);

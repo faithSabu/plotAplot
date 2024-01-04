@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ListingCard from "../components/ListingCard";
+import { FaHandPointDown } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { setCreateNewChat } from "../redux/user/chatSlice";
 
 export default function Search() {
+  const { createNewChat } = useSelector((state) => state.chat);
+
   const [loading, setLoading] = useState(false);
   const [listings, setListings] = useState([]);
   const [showMore, setShowMore] = useState(false);
@@ -17,6 +22,7 @@ export default function Search() {
   });
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
@@ -219,10 +225,21 @@ export default function Search() {
         </form>
       </div>
       <div className="flex-1">
+        {createNewChat && (
+          <div className="text-base lg:text-lg mt-5 text-slate-800 text-center w-full dark:text-slate-300 flex items-center justify-center animate-pulse gap-1 lg:gap-3">
+            <span className="animate-bounce">
+              <FaHandPointDown className="text-2xl" />
+            </span>
+            Please select any listing below to chat with landlord
+          </div>
+        )}
         <h1 className="text-3xl font-semibold border-b dark:border-slate-700 p-3 text-slate-700 mt-5 dark:text-white">
           Listing Results
         </h1>
-        <div className="p-7 flex flex-wrap gap-4">
+        <div
+          onClick={() => dispatch(setCreateNewChat(false))}
+          className="p-7 flex flex-wrap gap-4"
+        >
           {loading && (
             <p className="text-xl text-slate-700 text-center w-full dark:text-white">
               Loading...

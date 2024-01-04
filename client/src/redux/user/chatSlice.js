@@ -7,6 +7,7 @@ const initialState = {
   latestChat: null,
   loading: false,
   error: null,
+  createNewChat: false,
 };
 
 const chatSlice = createSlice({
@@ -36,6 +37,9 @@ const chatSlice = createSlice({
       state.loading = false;
       state.error = null;
     },
+    setCreateNewChat: (state, action) => {
+      state.createNewChat = action.payload;
+    },
   },
 });
 
@@ -44,7 +48,8 @@ export const {
   updateChatNumber,
   updateMessageNumber,
   updateOpenedChat,
-  updateLatestChat
+  updateLatestChat,
+  setCreateNewChat,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

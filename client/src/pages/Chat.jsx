@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import ChatSummary from "../components/ChatSummary";
 import Conversations from "../components/Conversations";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { setCreateNewChat } from "../redux/user/chatSlice";
 
 export default function Chat() {
   const { currentUser, loading, error } = useSelector((state) => state.user);
@@ -14,6 +15,7 @@ export default function Chat() {
   const [loadingChats, setLoadingChats] = useState(false);
   const params = useParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (chats && latestChat) {
@@ -60,7 +62,7 @@ export default function Chat() {
       }
     };
     currentUser && userChats();
-  }, []);
+  }, [currentUser]);
 
   const checkOnlineStatus = (chat) => {
     const chatMember = chat.members.find(
@@ -117,7 +119,12 @@ export default function Chat() {
             You haven't made any connections. Visit any listing to get in touch
             with the landlord.
             <Link to="/search">
-              <div className="text-blue-600 hover:text-blue-500 font-semibold hover:underline mt-2">
+              <div
+                onClick={() => {
+                  dispatch(setCreateNewChat(true));
+                }}
+                className="text-blue-600 hover:text-blue-500 font-semibold hover:underline mt-2"
+              >
                 Go to Listings
               </div>
             </Link>
